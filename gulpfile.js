@@ -12,7 +12,7 @@ var path = {
     dist: "dist"
 };
 
-gulp.task('server', ['dev'], function() {
+gulp.task('serve', ['dev'], function() {
     browserSync.init({
         server: {
             baseDir: [".tmp/dev", path.src],

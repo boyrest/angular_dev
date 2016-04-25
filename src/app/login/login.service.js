@@ -1,11 +1,13 @@
 angular.module('TEST')
-    .factory('LoginService', ['$q', '$http', 'api', function(localStorageService, $q, $http, api) {
+    .factory('LoginService', ['$q', '$http', 'api', function($q, $http, api) {
         var loginService = {};
         var apiRoute = api.isDev ? api.devRoute : api.proRoute;
 
-        loginService.logout = function() {
+        loginService.login = function(data) {
             var deferred = $q.defer();
-            $http.get(apiRoute + '/logout').then(function(res) {
+            console.log("####");
+            debugger;
+            $http.post(apiRoute + '/login',data).then(function(res) {
                 deferred.resolve(res.data);
             }, deferred.reject);
 
