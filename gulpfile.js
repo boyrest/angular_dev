@@ -3,8 +3,11 @@ var sort = require('gulp-angular-filesort');
 var inject = require('gulp-inject');
 var wiredep = require('wiredep').stream;
 var proxyMiddleware = require('http-proxy-middleware');
+var sass = require('gulp-sass');
+var concat = require('gulp-concat');
 
 var browserSync = require("browser-sync").create();
+var reload      = browserSync.reload;
 
 var path = {
     tmp: ".tmp",
@@ -12,7 +15,7 @@ var path = {
     dist: "dist"
 };
 
-gulp.task('serve', ['dev'], function() {
+gulp.task('serve', ['dev', 'sass'], function() {
     browserSync.init({
         server: {
             baseDir: [".tmp/dev", path.src],
@@ -26,6 +29,8 @@ gulp.task('serve', ['dev'], function() {
             ]
         }
     });
+    gulp.watch([path.src + "/*.css", path.src + "/**/*.css"], ['sass']);
+    gulp.watch([path.src + "/*.html"],['dev']).on('change', reload);
 });
 
 gulp.task('dev', function() {
@@ -57,5 +62,9 @@ gulp.task('bulid', function() {
 });
 
 gulp.task('sass', function() {
-
+  return gulp.src([path.src + "/*.scss", path.src + "/**/*.scss"])
+    .pipe(sass().on('error', sass.logError))
+    .pipe(concat('index.css'))
+    .pipe(gulp.dest('src/app'));
 });
+
